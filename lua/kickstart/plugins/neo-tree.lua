@@ -1,30 +1,12 @@
--- Neo-tree is a Neovim plugin to browse the file system
--- https://github.com/nvim-neo-tree/neo-tree.nvim
-
 ---@module 'lazy'
 ---@type LazySpec
 return {
-  'nvim-neo-tree/neo-tree.nvim',
-  version = '*',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-    'MunifTanjim/nui.nvim',
-  },
-  lazy = false,
+  'nvim-mini/mini.nvim',
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '-', function() require('mini.files').open(vim.api.nvim_buf_get_name(0)) end, desc = 'Open mini.files (current file)' },
+    { '\\', function() require('mini.files').open(vim.uv.cwd()) end, desc = 'Open mini.files (root dir)' },
   },
-  ---@module 'neo-tree'
-  ---@type neotree.Config
-  opts = {
-    filesystem = {
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-          ['<space>'] = 'none',
-        },
-      },
-    },
-  },
+  config = function()
+    require('mini.files').setup()
+  end,
 }
